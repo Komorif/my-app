@@ -6,16 +6,19 @@ from .serializer import AnimeVideoSerializer
 from rest_framework.response import Response
 
 
-# Для БД
 
 
 class AnimeVideoView(APIView):
     def get(self, request):
         output = [
             {
-                "title": output.title,
-                "description": output.description
-            } for output in ModelVideo.objects.all()
+                "image": request.build_absolute_uri(video.image.url) if video.image else None,
+                "title": video.title,
+                "genre": video.genre,
+                "date": video.date,
+                "month": video.month,
+                "description": video.description
+            } for video in ModelVideo.objects.all()
         ]
         return Response(output)
     
